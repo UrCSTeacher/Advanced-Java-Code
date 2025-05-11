@@ -1,0 +1,54 @@
+package com.mycompany.unit4;
+import java.sql.*;
+public class ConnectDB 
+{
+   
+   	static final String DBURL = "jdbc:mysql://localhost/emp1";
+   	public static void main(String[] args) 
+	{
+   		Connection con;    
+                Statement stmt;
+   		try
+		{
+      			//STEP 1: Register JDBC driver
+      			Class.forName("com.mysql.jdbc.Driver");
+
+      			//STEP 2: Create connection      			
+      			con = DriverManager.getConnection(DBURL,"root", "arjun");
+
+      			//STEP 3: Create Statement      			
+      			stmt = con.createStatement();                       
+      			String sql="SELECT eid,ename,salary FROM employee";
+                        
+                        //Step 4: Execute Query
+      			ResultSet rs = stmt.executeQuery(sql);
+
+                        //Display Result
+      			while(rs.next())
+			{
+         			//Retrieve by column name
+         			String id  = rs.getString("Eid");                                            			String name = rs.getString("Ename");
+         			int sal = rs.getInt("salary");
+         			
+         			System.out.print("ID: " + id);
+        			System.out.print(", Name: " + name);
+         			System.out.print(", Salary: " + sal);  
+                                System.out.println();
+      			}
+      			//STEP 5: Close Connection
+      			rs.close();
+      			stmt.close();
+      			con.close();
+   		}
+		catch(SQLException se)
+		{
+  			//Handle errors for JDBC
+   			System.out.println(se);
+   		}
+  		catch(ClassNotFoundException e)
+		{
+      			//Handle errors for Class.forName
+      			System.out.println(e);
+   		}   		
+}//end main
+}
